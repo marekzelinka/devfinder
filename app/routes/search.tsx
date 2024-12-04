@@ -1,43 +1,38 @@
-import { RectangleStackIcon } from '@heroicons/react/24/outline'
-import {
-  json,
-  redirect,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
-import type { CSSProperties } from 'react'
-import { Empty } from '~/components/empty'
-import { GeneralErrorBoundary } from '~/components/error-boundary'
-import { getUserByLogin } from '~/utils/github.server'
-import type { User } from '~/utils/types'
+import { RectangleStackIcon } from "@heroicons/react/24/outline";
+import type { CSSProperties } from "react";
+import { data, redirect } from "react-router";
+import { Empty } from "~/components/empty";
+import { GeneralErrorBoundary } from "~/components/error-boundary";
+import { getUserByLogin } from "~/utils/github.server";
+import type { User } from "~/utils/types";
+import type { Route } from "./+types/search";
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export function meta({ data, error }: Route.MetaArgs) {
   return [
     {
-      title: data ? (data.user.name ?? `@${data.user.login}`) : 'Not Found',
+      title: error ? "Not Found" : (data.user.name ?? `@${data.user.login}`),
     },
-  ]
+  ];
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const url = new URL(request.url)
-  const q = url.searchParams.get('q')?.trim()
+export async function loader({ request }: Route.LoaderArgs) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q")?.trim();
 
   if (!q) {
-    url.searchParams.set('q', 'kentcdodds')
+    url.searchParams.set("q", "kentcdodds");
 
-    return redirect(url.toString())
+    throw redirect(url.toString());
   }
 
-  const user = await getUserByLogin(q)
+  const user = await getUserByLogin(q);
   if (!user) {
-    throw new Response(`No user with the login "${q}" exists.`, {
+    throw data(`No user with the login "${q}" exists.`, {
       status: 404,
-    })
+    });
   }
 
-  return json({ user })
+  return { user };
 }
 
 export function ErrorBoundary() {
@@ -47,17 +42,17 @@ export function ErrorBoundary() {
         <GeneralErrorBoundary />
       </div>
     </div>
-  )
+  );
 }
 
-export default function Component() {
-  const { user } = useLoaderData<typeof loader>()
+export default function Component({ loaderData }: Route.ComponentProps) {
+  const { user } = loaderData;
 
   const stats = {
     Repositories: user.repositories.totalCount,
     Followers: user.followers.totalCount,
     Following: user.following.totalCount,
-  }
+  };
 
   return (
     <>
@@ -90,10 +85,10 @@ export default function Component() {
               {user.name ?? `@${user.login}`}
             </p>
             <p className="text-sm font-medium text-gray-600">
-              Joined on{' '}
+              Joined on{" "}
               <time dateTime={user.createdAt}>
-                {new Date(user.createdAt).toLocaleDateString('en-US', {
-                  dateStyle: 'long',
+                {new Date(user.createdAt).toLocaleDateString("en-US", {
+                  dateStyle: "long",
                 })}
               </time>
             </p>
@@ -115,7 +110,7 @@ export default function Component() {
             >
               <dt className="text-gray-600">{label}</dt>
               <dd className="text-gray-900">
-                {value.toLocaleString('en-US', { style: 'decimal' })}
+                {value.toLocaleString("en-US", { style: "decimal" })}
               </dd>
             </div>
           ))}
@@ -158,7 +153,7 @@ export default function Component() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 function UserProfile({
@@ -166,14 +161,14 @@ function UserProfile({
 }: {
   user: Pick<
     User,
-    | 'login'
-    | 'email'
-    | 'location'
-    | 'company'
-    | 'websiteUrl'
-    | 'twitterUsername'
-    | 'bio'
-  >
+    | "login"
+    | "email"
+    | "location"
+    | "company"
+    | "websiteUrl"
+    | "twitterUsername"
+    | "bio"
+  >;
 }) {
   return (
     <dl className="divide-y divide-gray-100">
@@ -241,13 +236,13 @@ function UserProfile({
         </dd>
       </div>
     </dl>
-  )
+  );
 }
 
 function UserRepositories({
   user,
 }: {
-  user: Pick<User, 'login' | 'url' | 'topRepositories'>
+  user: Pick<User, "login" | "url" | "topRepositories">;
 }) {
   return (
     <ul className="divide-y divide-gray-100">
@@ -271,7 +266,7 @@ function UserRepositories({
                     className="size-1.5 fill-[--color]"
                     style={
                       {
-                        '--color': repository.primaryLanguage.color,
+                        "--color": repository.primaryLanguage.color,
                       } as CSSProperties
                     }
                     aria-hidden
@@ -302,10 +297,10 @@ function UserRepositories({
           ) : null}
           <div className="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
             <p className="whitespace-nowrap">
-              {repository.stargazerCount.toLocaleString('en-US', {
-                style: 'decimal',
-              })}{' '}
-              {repository.stargazerCount === 1 ? 'star' : 'stars'}
+              {repository.stargazerCount.toLocaleString("en-US", {
+                style: "decimal",
+              })}{" "}
+              {repository.stargazerCount === 1 ? "star" : "stars"}
             </p>
             <svg
               viewBox="0 0 2 2"
@@ -315,13 +310,13 @@ function UserRepositories({
               <circle cx={1} cy={1} r={1} />
             </svg>
             <p className="whitespace-nowrap">
-              {repository.forkCount.toLocaleString('en-US', {
-                style: 'decimal',
-              })}{' '}
-              {repository.forkCount === 1 ? 'fork' : 'forks'}
+              {repository.forkCount.toLocaleString("en-US", {
+                style: "decimal",
+              })}{" "}
+              {repository.forkCount === 1 ? "fork" : "forks"}
             </p>
             {repository.licenseInfo &&
-            repository.licenseInfo?.name !== 'Other' ? (
+            repository.licenseInfo?.name !== "Other" ? (
               <>
                 <svg
                   viewBox="0 0 2 2"
@@ -341,10 +336,10 @@ function UserRepositories({
               <circle cx={1} cy={1} r={1} />
             </svg>
             <p className="whitespace-nowrap">
-              Updated on{' '}
+              Updated on{" "}
               <time dateTime={repository.updatedAt}>
-                {new Date(repository.updatedAt).toLocaleDateString('en-US', {
-                  dateStyle: 'medium',
+                {new Date(repository.updatedAt).toLocaleDateString("en-US", {
+                  dateStyle: "medium",
                 })}
               </time>
             </p>
@@ -352,5 +347,5 @@ function UserRepositories({
         </li>
       ))}
     </ul>
-  )
+  );
 }

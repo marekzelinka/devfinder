@@ -1,22 +1,22 @@
-import { cloneElement, type ReactElement, type ReactNode } from 'react'
+import { cloneElement, type ReactElement, type ReactNode } from "react";
 
 export function Empty({
   icon,
-  title = 'No data',
+  title = "No data",
   description,
   children,
 }: {
-  icon?: ReactElement
-  title?: string
-  description?: string
-  children?: ReactNode
+  icon?: ReactElement;
+  title?: string;
+  description?: string;
+  children?: ReactNode;
 }) {
   return (
     <div className="flex flex-col items-center">
       {icon
         ? cloneElement(icon, {
-            className: 'mb-4 size-6 text-gray-400',
-            'aria-hidden': true,
+            className: "mb-4 size-6 text-gray-400",
+            "aria-hidden": true,
           })
         : null}
       <p className="text-sm font-semibold text-gray-900">{title}</p>
@@ -25,5 +25,5 @@ export function Empty({
       ) : null}
       {children ? <div className="mt-6">{children}</div> : null}
     </div>
-  )
+  );
 }

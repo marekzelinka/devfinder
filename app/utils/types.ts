@@ -1,49 +1,49 @@
 interface Repository {
-  description: string | null
-  forkCount: number
+  description: string | null;
+  forkCount: number;
   licenseInfo: {
-    name: string
-  } | null
-  name: string
+    name: string;
+  } | null;
+  name: string;
   primaryLanguage: {
-    color: string | null
-    name: string
-  } | null
+    color: string | null;
+    name: string;
+  } | null;
   repositoryTopics: {
     nodes: {
       topic: {
-        name: string
-      }
-    }[]
-  }
-  stargazerCount: number
-  updatedAt: string
-  url: string
+        name: string;
+      };
+    }[];
+  };
+  stargazerCount: number;
+  updatedAt: string;
+  url: string;
 }
 
 export interface User {
-  avatarUrl: string
-  bio: string | null
-  company: string | null
-  createdAt: string
-  email: string | null
+  avatarUrl: string;
+  bio: string | null;
+  company: string | null;
+  createdAt: string;
+  email: string | null;
   followers: {
-    totalCount: number
-  }
+    totalCount: number;
+  };
   following: {
-    totalCount: number
-  }
-  location: string | null
-  login: string
-  name: string | null
-  pronouns: string | null
+    totalCount: number;
+  };
+  location: string | null;
+  login: string;
+  name: string | null;
+  pronouns: string | null;
   repositories: {
-    totalCount: number
-  }
+    totalCount: number;
+  };
   topRepositories: {
-    nodes: Repository[]
-  }
-  twitterUsername: string | null
-  url: string
-  websiteUrl: string | null
+    nodes: Repository[];
+  };
+  twitterUsername: string | null;
+  url: string;
+  websiteUrl: string | null;
 }

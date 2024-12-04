@@ -1,8 +1,8 @@
-import { ArrowPathIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import { Form, Outlet, useNavigation, useSearchParams } from '@remix-run/react'
-import { useEffect, useRef } from 'react'
-import { useHotkeys } from 'react-hotkeys-hook'
-import { useSpinDelay } from 'spin-delay'
+import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { useEffect, useRef } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { Form, Outlet, useNavigation, useSearchParams } from "react-router";
+import { useSpinDelay } from "spin-delay";
 
 export default function Component() {
   return (
@@ -29,7 +29,7 @@ export default function Component() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 function Logo({ className }: { className?: string }) {
@@ -42,40 +42,40 @@ function Logo({ className }: { className?: string }) {
     >
       <path d="M200 0v200h-60v-69.967C139.982 168.678 108.649 200 70 200c-38.66 0-70-31.34-70-70s31.34-70 70-70c38.649 0 69.982 31.322 70 69.967V60H0V0h200Z" />
     </svg>
-  )
+  );
 }
 
 function SearchBar() {
-  const [searchParams] = useSearchParams()
-  const q = searchParams.get('q')
+  const [searchParams] = useSearchParams();
+  const q = searchParams.get("q");
 
-  const navigation = useNavigation()
-  const searching = new URLSearchParams(navigation.location?.search).has('q')
-  const showSpinner = useSpinDelay(searching)
+  const navigation = useNavigation();
+  const searching = new URLSearchParams(navigation.location?.search).has("q");
+  const showSpinner = useSpinDelay(searching);
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Sync search input value with the URL Search Params
   useEffect(() => {
-    const searchField = inputRef.current
+    const searchField = inputRef.current;
     if (searchField) {
-      searchField.value = q ?? ''
+      searchField.value = q ?? "";
     }
-  }, [q])
+  }, [q]);
 
   // Focus input on key press
-  const shortcut = '/'
+  const shortcut = "/";
   useHotkeys(
     shortcut,
     () => {
-      const searchField = inputRef.current
+      const searchField = inputRef.current;
       if (searchField) {
-        searchField.focus()
-        searchField.select()
+        searchField.focus();
+        searchField.select();
       }
     },
     { preventDefault: true },
-  )
+  );
 
   return (
     <Form>
@@ -111,5 +111,5 @@ function SearchBar() {
         </div>
       </div>
     </Form>
-  )
+  );
 }
