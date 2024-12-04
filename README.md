@@ -1,6 +1,6 @@
 # GitHub User Search
 
-This project is a simple GitHub user search app. It's written in [TypeScript](https://www.typescriptlang.org/), using [Remix](https://remix.run/), [React.js](https://react.dev/) and [Tailwind CSS](https://tailwindcss.com/). I've deployed this project on [Vercel](https://vercel.com/).
+This project is a simple search app for GitHub users. It's written in [TypeScript](https://www.typescriptlang.org/) and uses [React](https://react.dev/), [React Router](https://reactrouter.com/) and [Tailwind CSS](https://tailwindcss.com/). I've deployed it on [Fly.io](https://fly.io/).
 
 ## Get started
 
@@ -13,7 +13,7 @@ This project is a simple GitHub user search app. It's written in [TypeScript](ht
 2. Install the dependencies:
 
    ```sh
-   npm i
+   pnpm i
    ```
 
 3. Define required env variables:
@@ -24,12 +24,12 @@ This project is a simple GitHub user search app. It's written in [TypeScript](ht
 4. Run the application in dev mode:
 
    ```sh
-   npm run dev
+   pnpm dev
    ```
 
 ## Goals
 
-Practice working with Remix [data loadings APIs](https://remix.run/docs/en/main/guides/data-loading) and using a third-party APIs, like [GitHub GraphQL API](https://docs.github.com/en/graphql).
+Practice working with Remix [data loadings APIs](https://remix.run/docs/en/main/guides/data-loading) and using third-party APIs, like [GitHub GraphQL API](https://docs.github.com/en/graphql).
 
 ## Credits
 
