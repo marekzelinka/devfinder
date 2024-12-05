@@ -81,7 +81,6 @@ export async function getUserByLogin(login: string) {
       const notFound = error.errors?.find(
         (error) => error.type === "NOT_FOUND",
       );
-
       if (notFound) {
         return null;
       }

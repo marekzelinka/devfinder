@@ -18,7 +18,6 @@ export function meta({ data, error }: Route.MetaArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q")?.trim();
-
   if (!q) {
     url.searchParams.set("q", "kentcdodds");
 
