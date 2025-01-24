@@ -1,4 +1,4 @@
-import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { useEffect, useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Form, Outlet, useNavigation, useSearchParams } from "react-router";
@@ -79,33 +79,33 @@ function SearchBar() {
 
   return (
     <Form>
-      <div className="group relative">
-        <div
-          className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
-          aria-hidden
-        >
-          {showSpinner ? (
-            <ArrowPathIcon className="size-5 animate-spin text-gray-400" />
-          ) : (
-            <MagnifyingGlassIcon className="size-5 text-gray-400" />
-          )}
-        </div>
+      <div className="group grid grid-cols-1">
         <input
           ref={inputRef}
           type="search"
           name="q"
           id="q"
           defaultValue={q ?? undefined}
-          className="block w-full rounded-md border-0 bg-gray-700 py-1.5 pl-10 pr-8 text-gray-300 placeholder:text-gray-400 focus:bg-white focus:text-gray-900 focus:ring-0 focus:[color-scheme:light] sm:text-sm/6"
+          className="col-start-1 row-start-1 block w-full rounded-md bg-gray-700 py-1.5 pr-10 pl-10 text-base text-white outline-hidden placeholder:text-gray-400 focus:bg-white focus:text-gray-900 focus:scheme-light focus:placeholder:text-gray-400 sm:text-sm/6"
           placeholder="Search"
           aria-label="Search users"
           aria-keyshortcuts={shortcut}
         />
         <div
-          className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5"
+          className="pointer-events-none col-start-1 row-start-1 ml-3 self-center text-gray-400"
           aria-hidden
         >
-          <kbd className="inline-flex items-center rounded border border-gray-600 px-1 font-sans text-xs text-gray-400 group-focus-within:border-gray-200">
+          {showSpinner ? (
+            <ArrowPathIcon className="size-5 animate-spin sm:size-4" />
+          ) : (
+            <MagnifyingGlassIcon className="size-5 sm:size-4" />
+          )}
+        </div>
+        <div
+          className="pointer-events-none col-start-1 row-start-1 mr-3 self-center justify-self-end"
+          aria-hidden
+        >
+          <kbd className="flex items-center rounded-sm border border-gray-600 px-1 font-sans text-xs text-gray-400 group-focus-within:border-gray-200">
             {shortcut}
           </kbd>
         </div>

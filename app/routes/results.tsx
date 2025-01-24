@@ -36,7 +36,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export function ErrorBoundary() {
   return (
-    <div className="overflow-hidden rounded-lg bg-white shadow">
+    <div className="overflow-hidden rounded-lg bg-white shadow-sm">
       <div className="p-6">
         <GeneralErrorBoundary />
       </div>
@@ -51,7 +51,7 @@ export default function Results({ loaderData }: Route.ComponentProps) {
     <>
       <h1 className="sr-only">Search results</h1>
       <UserInfoCard user={user} />
-      <div className="mt-6 overflow-hidden bg-white shadow sm:rounded-lg">
+      <div className="mt-6 overflow-hidden bg-white shadow-sm sm:rounded-lg">
         <div className="px-4 py-6 sm:px-6">
           <h3 className="text-base/7 font-semibold text-gray-900">Profile</h3>
         </div>
@@ -59,7 +59,7 @@ export default function Results({ loaderData }: Route.ComponentProps) {
           <UserProfile user={user} />
         </div>
       </div>
-      <div className="mt-6 overflow-hidden bg-white shadow sm:rounded-lg">
+      <div className="mt-6 overflow-hidden bg-white shadow-sm sm:rounded-lg">
         <div className="px-4 py-6 sm:px-6">
           <div className="flex items-center justify-between">
             <h3 className="text-base/7 font-semibold text-gray-900">
@@ -99,64 +99,67 @@ function UserInfoCard({ user }: { user: User }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-lg bg-white shadow">
-      <div className="p-6 sm:flex sm:items-center sm:justify-between sm:gap-5">
-        <img
-          key={user.avatarUrl}
-          src={user.avatarUrl}
-          alt=""
-          className="mx-auto size-20 flex-none rounded-full"
-        />
-        <div className="max-sm:mt-4 max-sm:text-center sm:min-w-0 sm:flex-1 sm:pt-1">
-          <div className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 sm:flex">
-            <p>{user.login}</p>
-            {user.pronouns ? (
-              <>
-                <svg
-                  viewBox="0 0 2 2"
-                  className="size-0.5 fill-current"
-                  aria-hidden
-                >
-                  <circle cx={1} cy={1} r={1} />
-                </svg>
-                <p>{user.pronouns}</p>
-              </>
-            ) : null}
+    <div className="overflow-hidden rounded-lg bg-white shadow-sm">
+      <div className="bg-white p-6">
+        <div className="sm:flex sm:items-center sm:justify-between">
+          <div className="sm:flex sm:space-x-5">
+            <div className="shrink-0">
+              <img
+                src={user.avatarUrl}
+                alt=""
+                className="mx-auto size-20 rounded-full"
+              />
+            </div>
+            <div className="mt-4 text-center sm:mt-0 sm:pt-1 sm:text-left">
+              <div className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 sm:flex">
+                <p>{user.login}</p>
+                {user.pronouns ? (
+                  <>
+                    <svg
+                      viewBox="0 0 2 2"
+                      className="size-0.5 fill-current"
+                      aria-hidden
+                    >
+                      <circle cx={1} cy={1} r={1} />
+                    </svg>
+                    <p>{user.pronouns}</p>
+                  </>
+                ) : null}
+              </div>
+              <p className="text-xl font-bold text-gray-900 sm:text-2xl">
+                {user.name ?? `@${user.login}`}
+              </p>
+              <p className="text-sm font-medium text-gray-600">
+                Joined on{" "}
+                <time dateTime={user.createdAt}>
+                  {new Date(user.createdAt).toLocaleDateString("en-US", {
+                    dateStyle: "long",
+                  })}
+                </time>
+              </p>
+            </div>
           </div>
-          <p className="truncate text-xl font-bold text-gray-900 sm:text-2xl">
-            {user.name ?? `@${user.login}`}
-          </p>
-          <p className="text-sm font-medium text-gray-600">
-            Joined on{" "}
-            <time dateTime={user.createdAt}>
-              {new Date(user.createdAt).toLocaleDateString("en-US", {
-                dateStyle: "long",
-              })}
-            </time>
-          </p>
-        </div>
-        <div className="flex justify-center max-sm:mt-5">
-          <a
-            href={user.url}
-            className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          >
-            View profile
-          </a>
+          <div className="mt-5 flex justify-center sm:mt-0">
+            <a
+              href={user.url}
+              className="flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
+            >
+              View profile
+            </a>
+          </div>
         </div>
       </div>
-      <dl className="grid grid-cols-1 divide-gray-200 border-t border-gray-200 bg-gray-50 max-sm:divide-y sm:grid-cols-3 sm:divide-x">
+      <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
         {Object.entries(stats).map(([label, value]) => (
           <div
             key={label}
-            className="flex flex-row-reverse justify-center gap-1 px-6 py-5 text-sm font-medium"
+            className="px-6 py-5 text-center text-sm font-medium"
           >
-            <dt className="text-gray-600">{label}</dt>
-            <dd className="text-gray-900">
-              {value.toLocaleString("en-US", { style: "decimal" })}
-            </dd>
+            <span className="text-gray-900">{value}</span>{" "}
+            <span className="text-gray-600">{label}</span>
           </div>
         ))}
-      </dl>
+      </div>
     </div>
   );
 }
@@ -233,7 +236,7 @@ function UserProfile({ user }: { user: User }) {
 
 function UserRepositories({ user }: { user: User }) {
   return (
-    <ul className="divide-y divide-gray-100">
+    <ul role="list" className="divide-y divide-gray-100">
       {user.topRepositories.nodes.map((repository) => (
         <li
           className="group relative px-4 py-5 hover:bg-gray-50 sm:px-6"
@@ -247,11 +250,11 @@ function UserRepositories({ user }: { user: User }) {
               </a>
             </p>
             {repository.primaryLanguage ? (
-              <p className="mt-0.5 inline-flex items-center gap-1.5 rounded-md bg-white px-1.5 py-0.5 text-xs font-medium text-gray-900 ring-1 ring-inset ring-gray-200">
+              <p className="mt-0.5 inline-flex items-center gap-1.5 rounded-md bg-white px-1.5 py-0.5 text-xs font-medium text-gray-900 ring-1 ring-gray-200 ring-inset">
                 {repository.primaryLanguage ? (
                   <svg
                     viewBox="0 0 6 6"
-                    className="size-1.5 fill-[--color]"
+                    className="size-1.5 fill-(--color)"
                     style={
                       {
                         "--color": repository.primaryLanguage.color,
@@ -276,7 +279,7 @@ function UserRepositories({ user }: { user: User }) {
               {repository.repositoryTopics.nodes.map(({ topic }) => (
                 <span
                   key={topic.name}
-                  className="inline-flex items-center rounded-md bg-sky-50 px-1.5 py-0.5 text-xs font-medium text-sky-700 ring-1 ring-inset ring-sky-700/10"
+                  className="inline-flex items-center rounded-md bg-sky-50 px-1.5 py-0.5 text-xs font-medium text-sky-700 ring-1 ring-sky-700/10 ring-inset"
                 >
                   {topic.name}
                 </span>
