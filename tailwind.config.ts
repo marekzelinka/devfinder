@@ -1,14 +1,22 @@
 import formsPlugin from "@tailwindcss/forms";
 import type { Config } from "tailwindcss";
 import colors from "tailwindcss/colors";
-import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
   content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        sans: ["InterVariable", ...defaultTheme.fontFamily.sans],
+        sans: [
+          '"Inter"',
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          '"Noto Color Emoji"',
+        ],
       },
       colors: {
         gray: colors.zinc,

@@ -1,6 +1,10 @@
+.DS_Store
+/node_modules/
+
+# Env vars
 .env
 !.env.example
-.DS_Store
-.react-router
-build
-node_modules
+
+# React Router
+/.react-router/
+/build/

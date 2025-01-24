@@ -4,7 +4,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { Form, Outlet, useNavigation, useSearchParams } from "react-router";
 import { useSpinDelay } from "spin-delay";
 
-export default function Component() {
+export default function SearchLayout() {
   return (
     <div className="min-h-full bg-gray-100">
       <header className="bg-gray-800 pb-24 [color-scheme:dark]">
