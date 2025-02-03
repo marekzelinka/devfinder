@@ -1,4 +1,4 @@
-# GitHub User Search
+# DevFinder
 
 This project is a simple search app for GitHub users. It's written in [TypeScript](https://www.typescriptlang.org/) and uses [React](https://react.dev/), [React Router](https://reactrouter.com/) and [Tailwind CSS](https://tailwindcss.com/). I've deployed it on [Fly.io](https://fly.io/).
 
@@ -7,7 +7,7 @@ This project is a simple search app for GitHub users. It's written in [TypeScrip
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/marekzelinka/github-user-search.git
+   git clone https://github.com/marekzelinka/devfinder.git
    ```
 
 2. Install the dependencies:
@@ -33,4 +33,4 @@ Practice working with Remix [data loadings APIs](https://remix.run/docs/en/main/
 
 ## Credits
 
-- Challenge by [Frontend Mentor](https://www.frontendmentor.io/challenges/github-user-search-app-Q09YOgaH6)
+- Challenge by [Frontend Mentor](https://www.frontendmentor.io/challenges/devfinder-app-Q09YOgaH6)
