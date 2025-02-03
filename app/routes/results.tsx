@@ -12,7 +12,7 @@ import type { Route } from "./+types/results";
 export function meta({ data, error }: Route.MetaArgs) {
   return [
     {
-      title: error ? "Not Found" : (data.user.name ?? `@${data.user.login}`),
+      title: `${error ? "Not Found" : (data.user.name ?? `@${data.user.login}`)} | DevFinder`,
     },
   ];
 }

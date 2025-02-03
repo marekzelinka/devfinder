@@ -1,14 +1,10 @@
 import type { ReactNode } from "react";
-import {
-  isRouteErrorResponse,
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { Route } from "./+types/root";
 import "./app.css";
+import { GeneralErrorBoundary } from "./components/error-boundary";
+
+export const meta: Route.MetaFunction = () => [{ title: "DevFinder" }];
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -32,7 +28,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="h-full antialiased [font-synthesis:none]">
+      <body className="h-full bg-gray-100 antialiased [font-synthesis:none]">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -42,34 +38,21 @@ export function Layout({ children }: { children: ReactNode }) {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
-  let stack: string | undefined;
-
-  if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
-    stack = error.stack;
-  }
-
   return (
-    <main className="container mx-auto p-4 pt-16">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full overflow-x-auto p-4">
-          <code>{stack}</code>
-        </pre>
-      )}
+    <main className="py-12">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-lg bg-white shadow-sm">
+          <div className="p-6">
+            <GeneralErrorBoundary />
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
 
 export default function App() {
+  throw new Error();
+
   return <Outlet />;
 }
