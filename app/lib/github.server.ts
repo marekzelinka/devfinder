@@ -1,6 +1,6 @@
 import { GraphqlResponseError, graphql } from "@octokit/graphql";
 import invariant from "tiny-invariant";
-import type { User } from "~/utils/types";
+import type { User } from "~/types";
 
 invariant(process.env.GITHUB_API_TOKEN, "Missing GITHUB_API_TOKEN env var");
 
@@ -78,10 +78,10 @@ export async function getUserByLogin(login: string) {
     return user;
   } catch (error) {
     if (error instanceof GraphqlResponseError) {
-      const notFound = error.errors?.find(
+      const notFoundError = error.errors?.find(
         (error) => error.type === "NOT_FOUND",
       );
-      if (notFound) {
+      if (notFoundError) {
         return null;
       }
 

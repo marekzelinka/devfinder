@@ -3,8 +3,8 @@ import type { CSSProperties } from "react";
 import { data, redirect } from "react-router";
 import { Empty } from "~/components/empty";
 import { GeneralErrorBoundary } from "~/components/error-boundary";
-import { getUserByLogin } from "~/utils/github.server";
-import type { User } from "~/utils/types";
+import { getUserByLogin } from "~/lib/github.server";
+import type { User } from "~/types";
 import type { Route } from "./+types/results";
 
 export function meta({ data, error }: Route.MetaArgs) {
@@ -91,6 +91,14 @@ export default function Results({ loaderData }: Route.ComponentProps) {
   );
 }
 
+const decimalFormatter = new Intl.NumberFormat("en-GB", {
+  style: "decimal",
+});
+
+const dateFormatter = new Intl.DateTimeFormat("en-GB", {
+  dateStyle: "medium",
+});
+
 function UserInfoCard({ user }: { user: User }) {
   const stats = {
     Repositories: user.repositories.totalCount,
@@ -131,10 +139,8 @@ function UserInfoCard({ user }: { user: User }) {
               </p>
               <p className="text-sm font-medium text-gray-600">
                 Joined on{" "}
-                <time dateTime={user.createdAt}>
-                  {new Date(user.createdAt).toLocaleDateString("en-US", {
-                    dateStyle: "long",
-                  })}
+                <time dateTime={new Date(user.createdAt).toISOString()}>
+                  {dateFormatter.format(new Date(user.createdAt))}
                 </time>
               </p>
             </div>
@@ -155,7 +161,9 @@ function UserInfoCard({ user }: { user: User }) {
             key={label}
             className="px-6 py-5 text-center text-sm font-medium"
           >
-            <span className="text-gray-900">{value}</span>{" "}
+            <span className="text-gray-900">
+              {decimalFormatter.format(value)}
+            </span>{" "}
             <span className="text-gray-600">{label}</span>
           </div>
         ))}
@@ -288,9 +296,7 @@ function UserRepositories({ user }: { user: User }) {
           ) : null}
           <div className="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
             <p className="whitespace-nowrap">
-              {repository.stargazerCount.toLocaleString("en-US", {
-                style: "decimal",
-              })}{" "}
+              {decimalFormatter.format(repository.stargazerCount)}{" "}
               {repository.stargazerCount === 1 ? "star" : "stars"}
             </p>
             <svg
@@ -301,9 +307,7 @@ function UserRepositories({ user }: { user: User }) {
               <circle cx={1} cy={1} r={1} />
             </svg>
             <p className="whitespace-nowrap">
-              {repository.forkCount.toLocaleString("en-US", {
-                style: "decimal",
-              })}{" "}
+              {decimalFormatter.format(repository.forkCount)}{" "}
               {repository.forkCount === 1 ? "fork" : "forks"}
             </p>
             {repository.licenseInfo &&
@@ -328,10 +332,8 @@ function UserRepositories({ user }: { user: User }) {
             </svg>
             <p className="whitespace-nowrap">
               Updated on{" "}
-              <time dateTime={repository.updatedAt}>
-                {new Date(repository.updatedAt).toLocaleDateString("en-US", {
-                  dateStyle: "medium",
-                })}
+              <time dateTime={new Date(repository.updatedAt).toISOString()}>
+                {dateFormatter.format(new Date(repository.updatedAt))}
               </time>
             </p>
           </div>
