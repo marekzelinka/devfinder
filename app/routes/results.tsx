@@ -3,7 +3,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { RectangleStackIcon } from "@heroicons/react/24/outline";
 import type { CSSProperties } from "react";
 import { data, redirect } from "react-router";
-import { Empty } from "~/components/empty";
+import { EmptyState } from "~/components/empty-state";
 import { GeneralErrorBoundary } from "~/components/error-boundary";
 import { getUserByLogin } from "~/lib/github.server";
 import type { User } from "~/types";
@@ -234,7 +234,7 @@ function UserRepositories({ user }: { user: User }) {
   if (!user.topRepositories.nodes.length) {
     return (
       <div className="px-6 py-12">
-        <Empty
+        <EmptyState
           icon={<RectangleStackIcon />}
           title="No repositories found"
           description={`${user.login} doesn't have any public repositories yet.`}

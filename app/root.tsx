@@ -4,7 +4,9 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import { GeneralErrorBoundary } from "./components/error-boundary";
 
-export const meta: Route.MetaFunction = () => [{ title: "DevFinder" }];
+export const meta: Route.MetaFunction = ({ error }) => [
+  { title: error ? " Oops!" : "DevFinder" },
+];
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -37,7 +39,7 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary() {
   return (
     <main className="py-12">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
