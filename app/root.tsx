@@ -52,7 +52,5 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 }
 
 export default function App() {
-  throw new Error();
-
   return <Outlet />;
 }
