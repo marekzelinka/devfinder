@@ -1,3 +1,5 @@
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { RectangleStackIcon } from "@heroicons/react/24/outline";
 import type { CSSProperties } from "react";
 import { data, redirect } from "react-router";
@@ -47,47 +49,33 @@ export function ErrorBoundary() {
 export default function Results({ loaderData }: Route.ComponentProps) {
   const { user } = loaderData;
 
+  const tabs = [
+    { name: "Top Repositories", children: <UserRepositories user={user} /> },
+    { name: "About", children: <UserProfile user={user} /> },
+  ];
+
   return (
-    <>
+    <div className="space-y-8">
       <h1 className="sr-only">Search results</h1>
       <UserInfoCard user={user} />
-      <div className="mt-6 overflow-hidden bg-white shadow-sm sm:rounded-lg">
-        <div className="px-4 py-6 sm:px-6">
-          <h3 className="text-base/7 font-semibold text-gray-900">Profile</h3>
-        </div>
-        <div className="border-t border-gray-100">
-          <UserProfile user={user} />
-        </div>
-      </div>
-      <div className="mt-6 overflow-hidden bg-white shadow-sm sm:rounded-lg">
-        <div className="px-4 py-6 sm:px-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base/7 font-semibold text-gray-900">
-              Top Repositories
-            </h3>
-            <a
-              href={`${user.url}?tab=repositories`}
-              className="text-sm/6 font-semibold text-sky-600 hover:text-sky-500"
+      <TabGroup as="nav" className="space-y-3" aria-label="Tabs">
+        <TabList className="flex gap-4">
+          {tabs.map((tab) => (
+            <Tab
+              key={tab.name}
+              className="rounded-md px-3 py-2 text-sm font-medium text-gray-600 focus:outline-none data-focus:outline-1 data-focus:outline-white data-hover:text-gray-800 data-selected:bg-gray-200 data-selected:text-gray-800"
             >
-              View all<span className="sr-only">, repositories</span>
-            </a>
-          </div>
-        </div>
-        <div className="border-t border-gray-100">
-          {user.topRepositories.nodes.length ? (
-            <UserRepositories user={user} />
-          ) : (
-            <div className="px-6 py-12">
-              <Empty
-                icon={<RectangleStackIcon />}
-                title="No repositories found"
-                description={`${user.login} doesn't have any public repositories yet.`}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </>
+              {tab.name}
+            </Tab>
+          ))}
+        </TabList>
+        <TabPanels className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+          {tabs.map((tab) => (
+            <TabPanel key={tab.name}>{tab.children}</TabPanel>
+          ))}
+        </TabPanels>
+      </TabGroup>
+    </div>
   );
 }
 
@@ -243,102 +231,126 @@ function UserProfile({ user }: { user: User }) {
 }
 
 function UserRepositories({ user }: { user: User }) {
+  if (!user.topRepositories.nodes.length) {
+    return (
+      <div className="px-6 py-12">
+        <Empty
+          icon={<RectangleStackIcon />}
+          title="No repositories found"
+          description={`${user.login} doesn't have any public repositories yet.`}
+        />
+      </div>
+    );
+  }
+
   return (
-    <ul role="list" className="divide-y divide-gray-100">
-      {user.topRepositories.nodes.map((repository) => (
-        <li
-          className="group relative px-4 py-5 hover:bg-gray-50 sm:px-6"
-          key={repository.url}
-        >
-          <div className="flex items-start gap-x-3">
-            <p className="text-sm/6 font-semibold text-gray-900">
-              <a href={repository.url}>
-                <span className="absolute inset-x-0 -top-px bottom-0" />
-                {repository.name}
-              </a>
-            </p>
-            {repository.primaryLanguage ? (
-              <p className="mt-0.5 inline-flex items-center gap-1.5 rounded-md bg-white px-1.5 py-0.5 text-xs font-medium text-gray-900 ring-1 ring-gray-200 ring-inset">
-                {repository.primaryLanguage ? (
-                  <svg
-                    viewBox="0 0 6 6"
-                    className="size-1.5 fill-(--color)"
-                    style={
-                      {
-                        "--color": repository.primaryLanguage.color,
-                      } as CSSProperties
-                    }
-                    aria-hidden
-                  >
-                    <circle cx={3} cy={3} r={3} />
-                  </svg>
-                ) : null}
-                {repository.primaryLanguage.name}
+    <div className="divide-y divide-gray-100">
+      <ul role="list" className="divide-y divide-gray-100">
+        {user.topRepositories.nodes.map((repository) => (
+          <li
+            className="group relative px-4 py-5 hover:bg-gray-50 sm:px-6"
+            key={repository.url}
+          >
+            <div className="flex items-start gap-x-3">
+              <p className="text-sm/6 font-semibold text-gray-900">
+                <a href={repository.url}>
+                  <span className="absolute inset-x-0 -top-px bottom-0" />
+                  {repository.name}
+                </a>
+              </p>
+              {repository.primaryLanguage ? (
+                <p className="mt-0.5 inline-flex items-center gap-1.5 rounded-md bg-white px-1.5 py-0.5 text-xs font-medium text-gray-900 ring-1 ring-gray-200 ring-inset">
+                  {repository.primaryLanguage ? (
+                    <svg
+                      viewBox="0 0 6 6"
+                      className="size-1.5 fill-(--color)"
+                      style={
+                        {
+                          "--color": repository.primaryLanguage.color,
+                        } as CSSProperties
+                      }
+                      aria-hidden
+                    >
+                      <circle cx={3} cy={3} r={3} />
+                    </svg>
+                  ) : null}
+                  {repository.primaryLanguage.name}
+                </p>
+              ) : null}
+            </div>
+            {repository.description ? (
+              <p className="mt-0.5 line-clamp-2 max-w-lg text-sm/6 text-gray-900">
+                {repository.description}
               </p>
             ) : null}
-          </div>
-          {repository.description ? (
-            <p className="mt-0.5 line-clamp-2 max-w-lg text-sm/6 text-gray-900">
-              {repository.description}
-            </p>
-          ) : null}
-          {repository.repositoryTopics.nodes?.length ? (
-            <p className="mt-1 flex flex-wrap gap-1">
-              {repository.repositoryTopics.nodes.map(({ topic }) => (
-                <span
-                  key={topic.name}
-                  className="inline-flex items-center rounded-md bg-sky-50 px-1.5 py-0.5 text-xs font-medium text-sky-700 ring-1 ring-sky-700/10 ring-inset"
-                >
-                  {topic.name}
-                </span>
-              ))}
-            </p>
-          ) : null}
-          <div className="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-            <p className="whitespace-nowrap">
-              {decimalFormatter.format(repository.stargazerCount)}{" "}
-              {repository.stargazerCount === 1 ? "star" : "stars"}
-            </p>
-            <svg
-              viewBox="0 0 2 2"
-              className="size-0.5 fill-current"
-              aria-hidden
-            >
-              <circle cx={1} cy={1} r={1} />
-            </svg>
-            <p className="whitespace-nowrap">
-              {decimalFormatter.format(repository.forkCount)}{" "}
-              {repository.forkCount === 1 ? "fork" : "forks"}
-            </p>
-            {repository.licenseInfo &&
-            repository.licenseInfo?.name !== "Other" ? (
-              <>
-                <svg
-                  viewBox="0 0 2 2"
-                  className="size-0.5 fill-current"
-                  aria-hidden
-                >
-                  <circle cx={1} cy={1} r={1} />
-                </svg>
-                <p className="truncate">{repository.licenseInfo.name}</p>
-              </>
+            {repository.repositoryTopics.nodes?.length ? (
+              <p className="mt-1 flex flex-wrap gap-1">
+                {repository.repositoryTopics.nodes.map(({ topic }) => (
+                  <span
+                    key={topic.name}
+                    className="inline-flex items-center rounded-md bg-sky-50 px-1.5 py-0.5 text-xs font-medium text-sky-700 ring-1 ring-sky-700/10 ring-inset"
+                  >
+                    {topic.name}
+                  </span>
+                ))}
+              </p>
             ) : null}
-            <svg
-              viewBox="0 0 2 2"
-              className="size-0.5 fill-current"
-              aria-hidden
-            >
-              <circle cx={1} cy={1} r={1} />
-            </svg>
-            <p className="whitespace-nowrap">
-              Updated on{" "}
-              <time dateTime={new Date(repository.updatedAt).toISOString()}>
-                {dateFormatter.format(new Date(repository.updatedAt))}
-              </time>
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
+            <div className="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
+              <p className="whitespace-nowrap">
+                {decimalFormatter.format(repository.stargazerCount)}{" "}
+                {repository.stargazerCount === 1 ? "star" : "stars"}
+              </p>
+              <svg
+                viewBox="0 0 2 2"
+                className="size-0.5 fill-current"
+                aria-hidden
+              >
+                <circle cx={1} cy={1} r={1} />
+              </svg>
+              <p className="whitespace-nowrap">
+                {decimalFormatter.format(repository.forkCount)}{" "}
+                {repository.forkCount === 1 ? "fork" : "forks"}
+              </p>
+              {repository.licenseInfo &&
+              repository.licenseInfo?.name !== "Other" ? (
+                <>
+                  <svg
+                    viewBox="0 0 2 2"
+                    className="size-0.5 fill-current"
+                    aria-hidden
+                  >
+                    <circle cx={1} cy={1} r={1} />
+                  </svg>
+                  <p className="truncate">{repository.licenseInfo.name}</p>
+                </>
+              ) : null}
+              <svg
+                viewBox="0 0 2 2"
+                className="size-0.5 fill-current"
+                aria-hidden
+              >
+                <circle cx={1} cy={1} r={1} />
+              </svg>
+              <p className="whitespace-nowrap">
+                Updated on{" "}
+                <time dateTime={new Date(repository.updatedAt).toISOString()}>
+                  {dateFormatter.format(new Date(repository.updatedAt))}
+                </time>
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="group relative px-4 py-3 hover:bg-gray-50 sm:px-6">
+        <a
+          href={`${user.url}?tab=repositories`}
+          className="inline-flex items-center gap-2 text-sm/6 font-semibold text-sky-600 group-hover:text-sky-500"
+        >
+          <span className="absolute inset-x-0 -top-px bottom-0" />
+          View all<span className="sr-only">, repositories</span>
+          <ArrowTopRightOnSquareIcon className="size-4" />
+        </a>
+      </div>
+    </div>
   );
 }
