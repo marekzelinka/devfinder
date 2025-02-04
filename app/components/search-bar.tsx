@@ -45,7 +45,7 @@ export function SearchBar() {
           name="q"
           id="q"
           defaultValue={q ?? undefined}
-          className="col-start-1 row-start-1 block w-full rounded-md bg-gray-700 py-1.5 pr-10 pl-10 text-base text-white outline-hidden placeholder:text-gray-400 focus:bg-white focus:text-gray-900 focus:scheme-light focus:placeholder:text-gray-400 sm:text-sm/6"
+          className="col-start-1 row-start-1 w-full rounded-md bg-gray-700 py-1.5 pr-10 pl-10 text-base text-white outline-hidden placeholder:text-gray-400 focus:bg-white focus:text-gray-900 focus:scheme-light focus:placeholder:text-gray-400 sm:text-sm/6"
           placeholder="Search"
           aria-label="Search users"
           aria-keyshortcuts={shortcut}

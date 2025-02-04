@@ -1,13 +1,14 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { RectangleStackIcon } from "@heroicons/react/24/outline";
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { data, redirect } from "react-router";
 import { EmptyState } from "~/components/empty-state";
 import { GeneralErrorBoundary } from "~/components/error-boundary";
 import { getUserByLogin } from "~/lib/github.server";
 import type { User } from "~/types";
-import type { Route } from "./+types/results";
+import type { Route } from "./+types/search-result";
 
 export function meta({ data, error }: Route.MetaArgs) {
   return [
@@ -51,15 +52,42 @@ export default function Results({ loaderData }: Route.ComponentProps) {
 
   const tabs = [
     { name: "Top Repositories", children: <UserRepositories user={user} /> },
-    { name: "About", children: <UserProfile user={user} /> },
+    { name: "Profile", children: <UserProfile user={user} /> },
   ];
+
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   return (
     <div className="space-y-8">
       <h1 className="sr-only">Search results</h1>
       <UserInfoCard user={user} />
-      <TabGroup as="nav" className="space-y-3" aria-label="Tabs">
-        <TabList className="flex gap-4">
+      <TabGroup
+        selectedIndex={selectedTabIndex}
+        onChange={setSelectedTabIndex}
+        className="space-y-3"
+      >
+        <div className="grid grid-cols-1 sm:hidden">
+          <select
+            value={selectedTabIndex}
+            onChange={(event) =>
+              setSelectedTabIndex(Number(event.target.value))
+            }
+            className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600"
+            aria-label="Select a tab"
+          >
+            {tabs.map((tab, index) => (
+              <option key={tab.name} value={index}>
+                {tab.name}
+              </option>
+            ))}
+          </select>
+          <ChevronDownIcon className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500" />
+        </div>
+        <TabList
+          as="nav"
+          aria-label="Tabs"
+          className="flex gap-4 max-sm:hidden"
+        >
           {tabs.map((tab) => (
             <Tab
               key={tab.name}
@@ -196,7 +224,7 @@ function UserProfile({ user }: { user: User }) {
           {user.websiteUrl ? (
             <a
               href={user.websiteUrl}
-              className="font-medium text-sky-600 hover:text-indigo-500"
+              className="font-medium text-sky-600 hover:text-sky-500"
             >
               {user.websiteUrl}
             </a>
@@ -211,7 +239,7 @@ function UserProfile({ user }: { user: User }) {
           {user.twitterUsername ? (
             <a
               href={`https://twitter.com/${user.twitterUsername}`}
-              className="font-medium text-sky-600 hover:text-indigo-500"
+              className="font-medium text-sky-600 hover:text-sky-500"
             >
               @{user.twitterUsername}
             </a>
