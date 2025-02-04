@@ -1,4 +1,11 @@
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import {
+  Select,
+  Tab,
+  TabGroup,
+  TabList,
+  TabPanel,
+  TabPanels,
+} from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { RectangleStackIcon } from "@heroicons/react/24/outline";
@@ -67,12 +74,12 @@ export default function Results({ loaderData }: Route.ComponentProps) {
         className="space-y-3"
       >
         <div className="grid grid-cols-1 sm:hidden">
-          <select
+          <Select
             value={selectedTabIndex}
             onChange={(event) =>
               setSelectedTabIndex(Number(event.target.value))
             }
-            className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-sky-600"
+            className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-sky-600"
             aria-label="Select a tab"
           >
             {tabs.map((tab, index) => (
@@ -80,7 +87,7 @@ export default function Results({ loaderData }: Route.ComponentProps) {
                 {tab.name}
               </option>
             ))}
-          </select>
+          </Select>
           <ChevronDownIcon className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500" />
         </div>
         <TabList

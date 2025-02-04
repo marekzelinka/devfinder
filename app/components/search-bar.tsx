@@ -1,3 +1,4 @@
+import { Input } from "@headlessui/react";
 import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { useEffect, useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -39,13 +40,13 @@ export function SearchBar() {
   return (
     <Form>
       <div className="group grid grid-cols-1">
-        <input
+        <Input
           ref={searchInputRef}
           type="search"
           name="q"
           id="q"
           defaultValue={q ?? undefined}
-          className="col-start-1 row-start-1 w-full rounded-md bg-gray-700 py-1.5 pr-10 pl-10 text-base text-white outline-hidden placeholder:text-gray-400 focus:bg-white focus:text-gray-900 focus:scheme-light focus:placeholder:text-gray-400 sm:text-sm/6"
+          className="col-start-1 row-start-1 w-full rounded-md bg-gray-700 py-1.5 pr-10 pl-10 text-base text-white outline-hidden placeholder:text-gray-400 data-focus:bg-white data-focus:text-gray-900 data-focus:scheme-light data-focus:placeholder:text-gray-400 sm:text-sm/6"
           placeholder="Search"
           aria-label="Search users"
           aria-keyshortcuts={shortcut}
