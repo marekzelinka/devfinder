@@ -13,6 +13,7 @@ import { useState, type CSSProperties } from "react";
 import { data, redirect } from "react-router";
 import { EmptyState } from "~/components/empty-state";
 import { GeneralErrorBoundary } from "~/components/error-boundary";
+import { dateFormatter, decimalFormatter } from "~/lib/format";
 import { getUserByLogin } from "~/lib/github.server";
 import type { User } from "~/types";
 import type { Route } from "./+types/search-result";
@@ -90,21 +91,19 @@ export default function Results({ loaderData }: Route.ComponentProps) {
           </Select>
           <ChevronDownIcon className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500" />
         </div>
-        <TabList
-          as="nav"
-          aria-label="Tabs"
-          className="flex gap-4 max-sm:hidden"
-        >
-          {tabs.map((tab) => (
-            <Tab
-              key={tab.name}
-              className="rounded-md px-3 py-2 text-sm font-medium text-gray-600 focus:outline-none data-focus:outline-1 data-focus:outline-white data-hover:text-gray-800 data-selected:bg-gray-200 data-selected:text-gray-800"
-            >
-              {tab.name}
-            </Tab>
-          ))}
-        </TabList>
-        <TabPanels className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+        <div className="max-sm:hidden">
+          <TabList as="nav" aria-label="Tabs" className="flex gap-4">
+            {tabs.map((tab) => (
+              <Tab
+                key={tab.name}
+                className="rounded-md px-3 py-2 text-sm font-medium text-gray-600 focus:outline-none data-focus:outline-1 data-focus:outline-white data-hover:text-gray-800 data-selected:bg-gray-200 data-selected:text-gray-800"
+              >
+                {tab.name}
+              </Tab>
+            ))}
+          </TabList>
+        </div>
+        <TabPanels className="overflow-hidden rounded-lg bg-white shadow-sm">
           {tabs.map((tab) => (
             <TabPanel key={tab.name}>{tab.children}</TabPanel>
           ))}
@@ -113,14 +112,6 @@ export default function Results({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
-
-const decimalFormatter = new Intl.NumberFormat("en-GB", {
-  style: "decimal",
-});
-
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
-  dateStyle: "medium",
-});
 
 function UserInfoCard({ user }: { user: User }) {
   const stats = {
@@ -131,6 +122,7 @@ function UserInfoCard({ user }: { user: User }) {
 
   return (
     <div className="overflow-hidden rounded-lg bg-white shadow-sm">
+      <h2 className="sr-only">Profile Overview</h2>
       <div className="bg-white p-6">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="sm:flex sm:space-x-5">
