@@ -23,14 +23,14 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body className="h-full bg-gray-100 antialiased [font-synthesis:none]">
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />

@@ -4,7 +4,7 @@ import { SearchBar } from "~/components/search-bar";
 
 export default function SearchLayout() {
   return (
-    <div className="min-h-full">
+    <div className="min-h-full bg-gray-50">
       <header className="bg-gray-800 pb-24 scheme-dark">
         <div className="mx-auto max-w-3xl px-2 sm:px-4 lg:px-8">
           <div className="relative flex items-center justify-between py-5">
