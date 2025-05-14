@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { Route } from "./+types/root";
-import "./app.css";
 import { GeneralErrorBoundary } from "./components/error-boundary";
+import "./tailwind.css";
 
 export const meta: Route.MetaFunction = ({ error }) => [
   { title: error ? " Oops!" : "DevFinder" },
