@@ -1,6 +1,6 @@
 import { GraphqlResponseError, graphql } from "@octokit/graphql";
 import invariant from "tiny-invariant";
-import type { User } from "~/types";
+import type { SearchUser, User } from "~/types";
 
 invariant(process.env.GITHUB_API_TOKEN, "Missing GITHUB_API_TOKEN env var");
 
@@ -73,9 +73,9 @@ const GET_USER_QUERY = /* GraphQL */ `
 
 export async function getUserByLogin(login: string) {
   try {
-    const { user } = await client<{ user: User }>(GET_USER_QUERY, { login });
+    const data = await client<{ user: User }>(GET_USER_QUERY, { login });
 
-    return user;
+    return data.user;
   } catch (error) {
     if (error instanceof GraphqlResponseError) {
       const notFoundError = error.errors?.find(
@@ -85,6 +85,36 @@ export async function getUserByLogin(login: string) {
         return null;
       }
 
+      throw new Error(error.errors?.[0].message);
+    }
+
+    throw error;
+  }
+}
+
+const GET_SEARCH_USER_QUERY = /* GraphQL */ `
+  query ($searchQuery: String!) {
+    search(query: $searchQuery, type: USER, first: 5) {
+      nodes {
+        ... on User {
+          avatarUrl
+          login
+          name
+        }
+      }
+    }
+  }
+`;
+
+export async function getUsersByQuery(query: string) {
+  try {
+    const data = await client<{ search: SearchUser }>(GET_SEARCH_USER_QUERY, {
+      searchQuery: query,
+    });
+
+    return data.search.nodes.filter((node) => node.login);
+  } catch (error) {
+    if (error instanceof GraphqlResponseError) {
       throw new Error(error.errors?.[0].message);
     }
 
