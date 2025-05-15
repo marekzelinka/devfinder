@@ -27,16 +27,16 @@ export function meta({ data, error }: Route.MetaArgs) {
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const q = url.searchParams.get("q")?.trim();
-  if (!q) {
-    url.searchParams.set("q", "kentcdodds");
+  const login = url.searchParams.get("login")?.trim()!;
+  if (!login) {
+    url.searchParams.set("login", "kentcdodds");
 
     throw redirect(url.toString());
   }
 
-  const user = await getUserByLogin(q);
+  const user = await getUserByLogin(login);
   if (!user) {
-    throw data(`No user with the login "${q}" exists.`, {
+    throw data(`No user with the login "${login}" exists.`, {
       status: 404,
     });
   }
@@ -54,7 +54,7 @@ export function ErrorBoundary() {
   );
 }
 
-export default function Results({ loaderData }: Route.ComponentProps) {
+export default function SearchResult({ loaderData }: Route.ComponentProps) {
   const { user } = loaderData;
 
   const tabs = [
@@ -169,7 +169,7 @@ function UserInfoCard({ user }: { user: User }) {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+      <div className="grid grid-cols-1 divide-y divide-gray-200 border-t border-gray-200 bg-gray-100/50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
         {Object.entries(stats).map(([label, value]) => (
           <div
             key={label}

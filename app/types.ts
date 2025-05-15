@@ -21,6 +21,10 @@ interface Repository {
   url: string;
 }
 
+export type SearchUser = {
+  nodes: Pick<User, "avatarUrl" | "login" | "name">[];
+};
+
 export interface User {
   avatarUrl: string;
   bio: string | null;

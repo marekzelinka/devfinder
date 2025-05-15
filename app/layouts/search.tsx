@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { Logo } from "~/components/logo";
-import { SearchBar } from "~/components/search-bar";
+import { UserCombobox } from "~/resources/users";
 
 export default function SearchLayout() {
   return (
@@ -14,9 +14,10 @@ export default function SearchLayout() {
               </div>
             </div>
             <div className="flex flex-1 justify-end px-2 md:ml-6">
-              <search role="search" className="w-full md:max-w-xs">
+              <UserCombobox />
+              {/* <search role="search" className="w-full md:max-w-xs">
                 <SearchBar />
-              </search>
+              </search> */}
             </div>
           </div>
         </div>
