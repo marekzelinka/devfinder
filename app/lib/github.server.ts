@@ -94,7 +94,7 @@ export async function getUserByLogin(login: string) {
 
 const GET_SEARCH_USER_QUERY = /* GraphQL */ `
   query ($searchQuery: String!) {
-    search(query: $searchQuery, type: USER, first: 5) {
+    search(query: $searchQuery, type: USER, first: 4) {
       nodes {
         ... on User {
           avatarUrl
@@ -109,10 +109,10 @@ const GET_SEARCH_USER_QUERY = /* GraphQL */ `
 export async function getUsersByQuery(query: string) {
   try {
     const data = await client<{ search: SearchUser }>(GET_SEARCH_USER_QUERY, {
-      searchQuery: query,
+      searchQuery: `in:login ${query}`,
     });
 
-    return data.search.nodes.filter((node) => node.login);
+    return data.search.nodes;
   } catch (error) {
     if (error instanceof GraphqlResponseError) {
       throw new Error(error.errors?.[0].message);

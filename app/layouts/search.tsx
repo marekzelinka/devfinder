@@ -4,7 +4,7 @@ import { UserCombobox } from "~/resources/users";
 
 export default function SearchLayout() {
   return (
-    <div className="min-h-full bg-gray-50">
+    <div className="min-h-svh bg-gray-50">
       <header className="bg-gray-800 pb-24 scheme-dark">
         <div className="mx-auto max-w-3xl px-2 sm:px-4 lg:px-8">
           <div className="relative flex items-center justify-between py-5">
@@ -14,7 +14,9 @@ export default function SearchLayout() {
               </div>
             </div>
             <div className="flex flex-1 justify-end px-2 md:ml-6">
-              <UserCombobox />
+              <div className="w-full max-w-xs">
+                <UserCombobox />
+              </div>
             </div>
           </div>
         </div>

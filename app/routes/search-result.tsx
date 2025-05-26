@@ -17,10 +17,10 @@ import { getUserByLogin } from "~/lib/github.server";
 import type { User } from "~/types";
 import type { Route } from "./+types/search-result";
 
-export function meta({ data, error }: Route.MetaArgs) {
+export function meta({ data }: Route.MetaArgs) {
   return [
     {
-      title: `${error ? "Not Found" : (data.user.name ?? `@${data.user.login}`)} | DevFinder`,
+      title: `${data ? (data.user.name ?? `@${data.user.login}`) : "Not Found"} | DevFinder`,
     },
   ];
 }
