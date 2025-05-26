@@ -15,9 +15,6 @@ export default function SearchLayout() {
             </div>
             <div className="flex flex-1 justify-end px-2 md:ml-6">
               <UserCombobox />
-              {/* <search role="search" className="w-full md:max-w-xs">
-                <SearchBar />
-              </search> */}
             </div>
           </div>
         </div>
